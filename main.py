@@ -122,6 +122,10 @@ def showData():
 	kw = cur.fetchone()[0]
 	return str(tr) + "<br/>" + str(kw)
 	refresh()
+@app.route('/clear')
+def clearData():
+	cur.execute("UPDATE data SET trie = %s, keywords = %s", ['{}', '[]'])
+	connection.commit()
 
 if __name__ == "__main__":
 	app.run(debug=True)
