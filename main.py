@@ -64,6 +64,12 @@ myData = cur.fetchone()[0]
 cur.execute("SELECT keywords FROM data")
 myKeywords = cur.fetchone()[0]
 
+def refresh():
+	cur.execute("SELECT trie FROM data")
+	myData = cur.fetchone()[0]
+	cur.execute("SELECT keywords FROM data")
+	myKeywords = cur.fetchone()[0]
+
 ##############################
 
 app = Flask(__name__)
@@ -79,6 +85,7 @@ def addWord(data):
 		myTrie.add_word(data)
 		cur.execute("UPDATE data SET trie = %s, keywords = %s", [str(myTrie.root), str(myTrie.wordslist)])
 		connection.commit()
+		refresh()
 		return "done!!"
 	else:
 		return "not a valid format"
@@ -91,6 +98,7 @@ def findWord(data):
 			return "word found"
 		else:
 			return "word not found"
+		refresh()
 	else:
 		return "not a valid format"
 
@@ -99,6 +107,7 @@ def prefixOfWord(data):
 	if str(data).isalpha():
 		myTrie = Trie(ast.literal_eval(myData), ast.literal_eval(myKeywords))
 		return str(myTrie.prefix_of(data))
+		refresh()
 
 @app.route('/show')
 def showData():
@@ -107,6 +116,7 @@ def showData():
 	cur.execute("SELECT keywords FROM data")
 	kw = cur.fetchone()[0]
 	return str(tr) + "<br/>" + str(kw)
+	refresh()
 
 if __name__ == "__main__":
 	app.run(debug=True)
