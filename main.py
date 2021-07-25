@@ -65,6 +65,7 @@ cur.execute("SELECT keywords FROM data")
 myKeywords = cur.fetchone()[0]
 
 def refresh():
+	global myData, myKeywords
 	cur.execute("SELECT trie FROM data")
 	myData = cur.fetchone()[0]
 	cur.execute("SELECT keywords FROM data")
