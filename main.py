@@ -65,6 +65,11 @@ def reconnect():
 		cur = connection.cursor()
 	except Error as e:
 		print(e)
+	global myData, myKeywords
+	cur.execute("SELECT trie FROM data")
+	myData = cur.fetchone()[0]
+	cur.execute("SELECT keywords FROM data")
+	myKeywords = cur.fetchone()[0]
 
 ##############################
 
