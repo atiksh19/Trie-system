@@ -66,6 +66,16 @@ myKeywords = cur.fetchone()[0]
 
 def refresh():
 	global myData, myKeywords
+	try:
+		connection = connect(
+			host="remotemysql.com",
+			user="kzEaB8dSjz",
+			password="5xZWr3JUQr",
+			database="kzEaB8dSjz"
+		)
+		cur = connection.cursor()
+	except Error as e:
+		print(e)
 	cur.execute("SELECT trie FROM data")
 	myData = cur.fetchone()[0]
 	cur.execute("SELECT keywords FROM data")
@@ -126,6 +136,7 @@ def showData():
 def clearData():
 	cur.execute("UPDATE data SET trie = %s, keywords = %s", ['{}', '[]'])
 	connection.commit()
+	refresh()
 
 if __name__ == "__main__":
 	app.run(debug=True)
