@@ -15,7 +15,8 @@ class Trie:
 				node[char] = {}
 			node = node[char]
 		node["."] = "."
-		self.wordslist.append(keyword)
+		if keyword not in self.wordslist:
+			self.wordslist.append(keyword)
 	def find_word(self, word):
 		node = self.root
 		for char in word:
