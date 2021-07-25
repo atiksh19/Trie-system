@@ -108,7 +108,6 @@ def showData():
 	kw = cur.fetchone()[0]
 	return str(tr) + "<br/>" + str(kw)
 
-
 if __name__ == "__main__":
 	app.run(debug=True)
 
