@@ -80,6 +80,7 @@ def noVal():
 
 @app.route('/add/<string:data>')
 def addWord(data):
+	refresh()
 	if str(data).isalpha():
 		myTrie = Trie(ast.literal_eval(myData), ast.literal_eval(myKeywords))
 		myTrie.add_word(data)
@@ -92,6 +93,7 @@ def addWord(data):
 
 @app.route('/find/<string:data>')
 def findWord(data):
+	refresh()
 	if str(data).isalpha():
 		myTrie = Trie(ast.literal_eval(myData), ast.literal_eval(myKeywords))
 		if myTrie.find_word(data):
@@ -104,6 +106,7 @@ def findWord(data):
 
 @app.route('/prefix/<string:data>')
 def prefixOfWord(data):
+	refresh()
 	if str(data).isalpha():
 		myTrie = Trie(ast.literal_eval(myData), ast.literal_eval(myKeywords))
 		return str(myTrie.prefix_of(data))
@@ -111,6 +114,7 @@ def prefixOfWord(data):
 
 @app.route('/show')
 def showData():
+	refresh()
 	cur.execute("SELECT trie FROM data")
 	tr = cur.fetchone()[0]
 	cur.execute("SELECT keywords FROM data")
