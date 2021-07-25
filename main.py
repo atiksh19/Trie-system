@@ -66,6 +66,11 @@ myKeywords = cur.fetchone()[0]
 
 def refresh():
 	global myData, myKeywords
+	cur.execute("SELECT trie FROM data")
+	myData = cur.fetchone()[0]
+	cur.execute("SELECT keywords FROM data")
+	myKeywords = cur.fetchone()[0]
+def reconnect():
 	try:
 		connection = connect(
 			host="remotemysql.com",
@@ -76,10 +81,6 @@ def refresh():
 		cur = connection.cursor()
 	except Error as e:
 		print(e)
-	cur.execute("SELECT trie FROM data")
-	myData = cur.fetchone()[0]
-	cur.execute("SELECT keywords FROM data")
-	myKeywords = cur.fetchone()[0]
 
 ##############################
 
@@ -91,7 +92,7 @@ def noVal():
 
 @app.route('/add/<string:data>')
 def addWord(data):
-	refresh()
+	reconnect()
 	if str(data).isalpha():
 		myTrie = Trie(ast.literal_eval(myData), ast.literal_eval(myKeywords))
 		myTrie.add_word(data)
@@ -104,7 +105,7 @@ def addWord(data):
 
 @app.route('/find/<string:data>')
 def findWord(data):
-	refresh()
+	reconnect()
 	if str(data).isalpha():
 		myTrie = Trie(ast.literal_eval(myData), ast.literal_eval(myKeywords))
 		if myTrie.find_word(data):
@@ -117,7 +118,7 @@ def findWord(data):
 
 @app.route('/prefix/<string:data>')
 def prefixOfWord(data):
-	refresh()
+	reconnect()
 	if str(data).isalpha():
 		myTrie = Trie(ast.literal_eval(myData), ast.literal_eval(myKeywords))
 		return str(myTrie.prefix_of(data))
@@ -125,7 +126,7 @@ def prefixOfWord(data):
 
 @app.route('/show')
 def showData():
-	refresh()
+	reconnect()
 	cur.execute("SELECT trie FROM data")
 	tr = cur.fetchone()[0]
 	cur.execute("SELECT keywords FROM data")
@@ -134,6 +135,7 @@ def showData():
 	refresh()
 @app.route('/clear')
 def clearData():
+	reconnect()
 	cur.execute("UPDATE data SET trie = %s, keywords = %s", ['{}', '[]'])
 	connection.commit()
 	refresh()

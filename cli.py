@@ -1,8 +1,9 @@
 import requests
 import sys
-from mysql.connector import connect, Error
+import codecs
 
-"""data = requests.get("https://trie-system-atiksh.herokuapp.com/show")
+data = requests.get("https://trie-system-atiksh.herokuapp.com/add/word/")
+
 for d in data:
 	print(d)
-data.close()"""
+data.close()
