@@ -48,22 +48,6 @@ Server: remotemysql.com
 Port: 3306
 """
 
-try:
-	connection = connect(
-		host="remotemysql.com",
-		user="kzEaB8dSjz",
-		password="5xZWr3JUQr",
-		database="kzEaB8dSjz"
-	)
-	cur = connection.cursor()
-except Error as e:
-	print(e)
-
-cur.execute("SELECT trie FROM data")
-myData = cur.fetchone()[0]
-cur.execute("SELECT keywords FROM data")
-myKeywords = cur.fetchone()[0]
-
 def refresh():
 	global myData, myKeywords
 	cur.execute("SELECT trie FROM data")
