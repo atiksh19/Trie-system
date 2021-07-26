@@ -1,6 +1,6 @@
 import ast
 from flask import Flask
-from mysql.connector import connect, Error
+from psycopg2 import connect, Error
 
 ######################################
 
@@ -54,10 +54,10 @@ myKeywords = '[]'
 
 try:
 	connection = connect(
-		host="remotemysql.com",
-		user="kzEaB8dSjz",
-		password="5xZWr3JUQr",
-		database="kzEaB8dSjz"
+		host="chunee.db.elephantsql.com",
+		user="cdkclnkt",
+		password="dbv0ntLPe71E-JEyvdoXNkzZpgk3GJrr",
+		database="cdkclnkt"
 	)
 	cur = connection.cursor()
 except Error as e:
