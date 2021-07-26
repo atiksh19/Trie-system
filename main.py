@@ -48,23 +48,23 @@ Server: remotemysql.com
 Port: 3306
 """
 
+try:
+	connection = connect(
+		host="remotemysql.com",
+		user="kzEaB8dSjz",
+		password="5xZWr3JUQr",
+		database="kzEaB8dSjz"
+	)
+	cur = connection.cursor()
+except Error as e:
+	print(e)
+
+cur.execute("SELECT trie FROM data")
+myData = cur.fetchone()[0]
+cur.execute("SELECT keywords FROM data")
+myKeywords = cur.fetchone()[0]
+
 def refresh():
-	global myData, myKeywords
-	cur.execute("SELECT trie FROM data")
-	myData = cur.fetchone()[0]
-	cur.execute("SELECT keywords FROM data")
-	myKeywords = cur.fetchone()[0]
-def reconnect():
-	try:
-		connection = connect(
-			host="remotemysql.com",
-			user="kzEaB8dSjz",
-			password="5xZWr3JUQr",
-			database="kzEaB8dSjz"
-		)
-		cur = connection.cursor()
-	except Error as e:
-		print(e)
 	global myData, myKeywords
 	cur.execute("SELECT trie FROM data")
 	myData = cur.fetchone()[0]
@@ -81,7 +81,6 @@ def noVal():
 
 @app.route('/add/<string:data>')
 def addWord(data):
-	reconnect()
 	if str(data).isalpha():
 		myTrie = Trie(ast.literal_eval(myData), ast.literal_eval(myKeywords))
 		myTrie.add_word(data)
@@ -94,7 +93,6 @@ def addWord(data):
 
 @app.route('/find/<string:data>')
 def findWord(data):
-	reconnect()
 	if str(data).isalpha():
 		myTrie = Trie(ast.literal_eval(myData), ast.literal_eval(myKeywords))
 		if myTrie.find_word(data):
@@ -107,7 +105,6 @@ def findWord(data):
 
 @app.route('/prefix/<string:data>')
 def prefixOfWord(data):
-	reconnect()
 	if str(data).isalpha():
 		myTrie = Trie(ast.literal_eval(myData), ast.literal_eval(myKeywords))
 		return str(myTrie.prefix_of(data))
@@ -115,7 +112,6 @@ def prefixOfWord(data):
 
 @app.route('/show')
 def showData():
-	reconnect()
 	cur.execute("SELECT trie FROM data")
 	tr = cur.fetchone()[0]
 	cur.execute("SELECT keywords FROM data")
@@ -124,12 +120,11 @@ def showData():
 	refresh()
 @app.route('/clear')
 def clearData():
-	reconnect()
 	cur.execute("UPDATE data SET trie = %s, keywords = %s", ['{}', '[]'])
 	connection.commit()
 	refresh()
 
 if __name__ == "__main__":
-	app.run(debug=True)
+	app.run(debug=False, host='0.0.0.0')
 
 ##############################
