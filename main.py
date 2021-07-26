@@ -124,12 +124,10 @@ if __name__ == "__main__":
 		cur = connection.cursor()
 	except Error as e:
 		print(e)
-
-cur.execute("SELECT trie FROM data")
-myData = cur.fetchone()[0]
-cur.execute("SELECT keywords FROM data")
-myKeywords = cur.fetchone()[0]
-
+	cur.execute("SELECT trie FROM data")
+	myData = cur.fetchone()[0]
+	cur.execute("SELECT keywords FROM data")
+	myKeywords = cur.fetchone()[0]
 	app.run(debug=False, host='0.0.0.0')
 
 ##############################
