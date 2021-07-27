@@ -45,15 +45,22 @@ def prefix(data):
 	return st[2:-1]
 
 if action == '-a':
-	print(add(key))
+	print("are you sure you want to add the word \'" + key + "\'?(y/n)")
+	confirm = input()
+	if confirm == 'y':
+		print(add(key))
+	elif confirm == 'n':
+		print("run the script again!")
+		exit()
+
 elif action == '-f':
 	print(find(key))
 elif action == '-p':
 	print(prefix(key))
 elif action == '-s':
 	if key == "trie":
-		print(get(0))
+		print('\n' + get(0))
 	elif key == "words":
-		print(get(1))
+		print('\n' + get(1))
 	else:
 		print(key + " is not a valid request")
