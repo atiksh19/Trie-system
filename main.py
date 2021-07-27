@@ -1,10 +1,14 @@
+#importing stuff
 import ast
 from flask import Flask
 from psycopg2 import connect, Error
 
 ######################################
-
+#trie class using python dictionaries instead of objects
 class Trie:
+	#each node is a dictionary item with its own dictionary values
+	#each dictionary contains its own children as other dictionaries
+	#the end of a word is represented by a '.' in its children
 	def __init__(self, root, wordslist):
 		self.root = root
 		self.wordslist = wordslist
@@ -36,22 +40,10 @@ class Trie:
 
 ######################################
 
-"""
-Username: kzEaB8dSjz
+myData = ''
+myKeywords = ''
 
-Database name: kzEaB8dSjz
-
-Password: 5xZWr3JUQr
-
-Server: remotemysql.com
-
-Port: 3306
-"""
-
-myData = '{}'
-myKeywords = '[]'
-
-
+#connecting to the database
 try:
 	connection = connect(
 		host="chunee.db.elephantsql.com",
@@ -62,7 +54,7 @@ try:
 	cur = connection.cursor()
 except Error as e:
 	print(e)
-
+# adding refresh functionality to call before and after every execution
 def refresh():
 	global myData, myKeywords
 	cur.execute("SELECT trie FROM data")
@@ -71,13 +63,17 @@ def refresh():
 	myKeywords = cur.fetchone()[0]
 
 ##############################
-
+#converting to usable flask app
 app = Flask(__name__)
 
 @app.route('/')
+#we don't need this path in our project
 def noVal():
 	return "Not a valid function"
-
+#the below shows some interaction with the database
+#we get the trie to change our data for us
+#then we rewrite the whole data after being processed
+#this is very risky so I have added multiple validations
 @app.route('/add/<string:data>')
 def addWord(data):
 	if str(data).isalpha():
