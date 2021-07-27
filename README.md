@@ -1,7 +1,7 @@
 # Trie-system
 This repository is made for the Slingshot take home challenge
 # About
-A lot of the code I wrote has been explained using comments. I used python dictionaries instead of making them objects, as that was much easier to store in a database. Each node is just a dictionary object with a value of other dictionary objects, which are its children nodes. It has multiple validations for security as it has to rewrite the data everytime so the processing may take a few seconds(anywhere from less than a second to about 7), depending on your internet speed, before it completes.
+A lot of the code I wrote has been explained using comments. I used python dictionaries instead of making them objects, as that was much easier to store in a database. Each node is just a dictionary object with a value of other dictionary objects, which are its children nodes. It has multiple validations for security as it has to rewrite the data everytime so the processing may take a few seconds(anywhere from less than a second to about 12), depending on your internet speed, before it completes.
 # How I made it
 I have my exams going on and they will go on until 7 August, so I got very little time to work on this. I originally used mySQL database but I had to later switch to postgreSQL. I am surprised I managed to get it to work but I couldn't add too much funcionality to it. I made a very simple CLI for it, the instructions for which are given below
 # How to use
