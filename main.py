@@ -87,6 +87,24 @@ def addWord(data):
 	else:
 		return "not a valid format"
 
+@app.route('/rem/<string:data>')
+def remWord(data):
+	if str(data).isalpha():
+		refresh()
+		keywords = ast.literal_eval(myKeywords)
+		if str(data) not in keywords:
+			return "word not found"
+		keywords.remove(str(data))
+		myTrie = Trie({}, keywords)
+		for kw in keywords:
+			myTrie.add_word(kw)
+		cur.execute("UPDATE data SET trie = %s, keywords = %s", [str(myTrie.root), str(myTrie.wordslist)])
+		connection.commit()
+		refresh()
+		return "done!!"
+	else:
+		return "not a valid format"
+
 @app.route('/find/<string:data>')
 def findWord(data):
 	if str(data).isalpha():
